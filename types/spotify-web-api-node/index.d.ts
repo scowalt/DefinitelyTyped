@@ -852,8 +852,8 @@ declare class SpotifyWebApi {
      * @returns A promise that if successful, resolves into an object containing the access token,
      *          token type and time to expiration. If rejected, it contains an error object. Not returned if a callback is given.
      */
-    clientCredentialsGrant(options: {}, callback: SpotifyWebApi.Callback<ClientCredentialsGrantResponse>): void;
-    clientCredentialsGrant(options?: {}): Promise<SpotifyWebApi.Response<ClientCredentialsGrantResponse>>;
+    clientCredentialsGrant(options: {}, callback: SpotifyWebApi.Callback<SpotifyWebApi.ClientCredentialsGrantResponse>): void;
+    clientCredentialsGrant(options?: {}): Promise<SpotifyWebApi.Response<SpotifyWebApi.ClientCredentialsGrantResponse>>;
 
     /**
      * Request an access token using the Authorization Code flow.
@@ -864,8 +864,8 @@ declare class SpotifyWebApi {
      *          refresh token, token type and time to expiration. If rejected, it contains an error object.
      *          Not returned if a callback is given.
      */
-    authorizationCodeGrant(code: string, callback: SpotifyWebApi.Callback<AuthorizationCodeGrantResponse>): void;
-    authorizationCodeGrant(code: string): Promise<SpotifyWebApi.Response<AuthorizationCodeGrantResponse>>;
+    authorizationCodeGrant(code: string, callback: SpotifyWebApi.Callback<SpotifyWebApi.AuthorizationCodeGrantResponse>): void;
+    authorizationCodeGrant(code: string): Promise<SpotifyWebApi.Response<SpotifyWebApi.AuthorizationCodeGrantResponse>>;
 
     /**
      * Refresh the access token given that it hasn't expired.
@@ -875,8 +875,8 @@ declare class SpotifyWebApi {
      *          access token, time to expiration and token type. If rejected, it contains an error object.
      *          Not returned if a callback is given.
      */
-    refreshAccessToken(callback: SpotifyWebApi.Callback<RefreshAccessTokenResponse>): void;
-    refreshAccessToken(): Promise<SpotifyWebApi.Response<RefreshAccessTokenResponse>>;
+    refreshAccessToken(callback: SpotifyWebApi.Callback<SpotifyWebApi.RefreshAccessTokenResponse>): void;
+    refreshAccessToken(): Promise<SpotifyWebApi.Response<SpotifyWebApi.RefreshAccessTokenResponse>>;
 }
 
 declare namespace SpotifyWebApi {
@@ -886,6 +886,39 @@ declare namespace SpotifyWebApi {
         body: T;
         headers: Record<string, string>;
         statusCode: number;
+    }
+
+    /**
+     * Response returned when using Client Credentials authentication flow
+     * https://developer.spotify.com/documentation/general/guides/authorization-guide/#example-4
+     */
+    interface ClientCredentialsGrantResponse {
+        access_token: string;
+        expires_in: number;
+        token_type: string;
+    }
+
+    /**
+     * Response returned when requesting for access token
+     * https://developer.spotify.com/documentation/general/guides/authorization-guide/#2-have-your-application-request-refresh-and-access-tokens-spotify-returns-access-and-refresh-tokens
+     */
+    interface AuthorizationCodeGrantResponse {
+        access_token: string;
+        expires_in: number;
+        refresh_token: string;
+        scope: string;
+        token_type: string;
+    }
+
+    /**
+     * Response returned when requesting new access token (via refresh token)
+     * https://developer.spotify.com/documentation/general/guides/authorization-guide/#4-requesting-a-refreshed-access-token-spotify-returns-a-new-access-token-to-your-app
+     */
+    interface RefreshAccessTokenResponse {
+        access_token: string;
+        expires_in: number;
+        scope: string;
+        token_type: string;
     }
 }
 
@@ -1057,39 +1090,6 @@ interface ShuffleOptions extends DeviceOptions {
 
 interface GetFeaturedPlaylistsOptions extends PaginationLocaleOptions {
     timestamp?: string;
-}
-
-/**
- * Response returned when using Client Credentials authentication flow
- * https://developer.spotify.com/documentation/general/guides/authorization-guide/#example-4
- */
-interface ClientCredentialsGrantResponse {
-    access_token: string;
-    expires_in: number;
-    token_type: string;
-}
-
-/**
- * Response returned when requesting for access token
- * https://developer.spotify.com/documentation/general/guides/authorization-guide/#2-have-your-application-request-refresh-and-access-tokens-spotify-returns-access-and-refresh-tokens
- */
-interface AuthorizationCodeGrantResponse {
-    access_token: string;
-    expires_in: number;
-    refresh_token: string;
-    scope: string;
-    token_type: string;
-}
-
-/**
- * Response returned when requesting new access token (via refresh token)
- * https://developer.spotify.com/documentation/general/guides/authorization-guide/#4-requesting-a-refreshed-access-token-spotify-returns-a-new-access-token-to-your-app
- */
-interface RefreshAccessTokenResponse {
-    access_token: string;
-    expires_in: number;
-    scope: string;
-    token_type: string;
 }
 
 export = SpotifyWebApi;
